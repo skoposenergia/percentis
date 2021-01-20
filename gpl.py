@@ -2,7 +2,7 @@ import datetime as dt
 from getpass import getpass
 from pathlib import Path
 
-from gpluv.src.functionsPluviaAPI import *
+from src.functionsPluviaAPI import *
 
 user = input("Usuário: ")
 psswd = getpass("Senha: ")
