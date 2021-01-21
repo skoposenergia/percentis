@@ -21,7 +21,7 @@ for precipitationDataSource in precipitationDataSources:
 for forecastModel in forecastModels:
     id_models.append(getIdOfForecastModel(forecastModel))
 
-current_day = dt.datetime.today()
+current_day = dt.datetime.today() - dt.timedelta(days=1)
 
 forecastdate = current_day.strftime("%d/%m/%Y")
 format_directory = current_day.strftime("%Y-%m-%d")
@@ -31,7 +31,7 @@ if not (directoryOfDownload.exists()):
     Path.mkdir(directoryOfDownload)
 
 forecasts = getForecasts(forecastdate, id_maps,
-                         id_models, '', '', [current_day.year], [])
+                         id_models, '', 'false', [current_day.year], [])
 
 for forecast in forecasts:
     # downloadForecast(forecast['prevsId'], dir_download,
