@@ -4,39 +4,41 @@ from pathlib import Path
 
 from src.functionsPluviaAPI import *
 
-user = input("Usuário: ")
-psswd = getpass("Senha: ")
 
-id_maps = []
-id_models = []
+def download_base_files(downloadDate):
+    user = input("Usuário: ")
+    psswd = getpass("Senha: ")
 
-token = authenticatePluvia(user, psswd)
+    id_maps = []
+    id_models = []
 
-precipitationDataSources = ["ECMWF_ENS", "ECMWF_ENS_EXT"]
-forecastModels = ['IA+SMAP', 'IA+SMAP']
+    token = authenticatePluvia(user, psswd)
 
-for precipitationDataSource in precipitationDataSources:
-    id_maps.append(getIdOfPrecipitationDataSource(precipitationDataSource))
+    precipitationDataSources = ["ECMWF_ENS", "ECMWF_ENS_EXT"]
+    forecastModels = ['IA+SMAP', 'IA+SMAP']
 
-for forecastModel in forecastModels:
-    id_models.append(getIdOfForecastModel(forecastModel))
+    for precipitationDataSource in precipitationDataSources:
+        id_maps.append(getIdOfPrecipitationDataSource(precipitationDataSource))
 
-current_day = dt.datetime.today() - dt.timedelta(days=1)
+    for forecastModel in forecastModels:
+        id_models.append(getIdOfForecastModel(forecastModel))
 
-forecastdate = current_day.strftime("%d/%m/%Y")
-format_directory = current_day.strftime("%Y-%m-%d")
+    # downloadDate = dt.datetime.today() - dt.timedelta(days=1)
 
-directoryOfDownload = Path('Arquivos/%s' % format_directory)
-if not (directoryOfDownload.exists()):
-    Path.mkdir(directoryOfDownload)
+    forecastdate = downloadDate.strftime("%d/%m/%Y")
+    format_directory = downloadDate.strftime("%Y-%m-%d")
 
-forecasts = getForecasts(forecastdate, id_maps,
-                         id_models, '', 'false', [current_day.year], [])
+    directoryOfDownload = Path('Downloads/%s' % format_directory)
+    if not (directoryOfDownload.exists()):
+        Path.mkdir(directoryOfDownload)
 
-for forecast in forecasts:
-    # downloadForecast(forecast['prevsId'], dir_download,
-    #                  forecast['nome'] + ' - ' + forecast['membro'] + ' - Prevs.zip')
-    downloadForecast(forecast['enaId'], directoryOfDownload,
-                     forecast['nome'] + ' - ' + forecast['membro'] + '- ENA.zip')
-    # downloadForecast(forecast['vnaId'], dir_download, forecast['nome'] + ' - ' + forecast['membro'] + '- VNA.csv')
-    # downloadForecast(forecast['strId'], dir_download, forecast['nome'] + ' - ' + forecast['membro'] + '- STR.zip')
+    forecasts = getForecasts(forecastdate, id_maps,
+                             id_models, '', 'false', [downloadDate.year], [])
+
+    for forecast in forecasts:
+        # downloadForecast(forecast['prevsId'], dir_download,
+        #                  forecast['nome'] + ' - ' + forecast['membro'] + ' - Prevs.zip')
+        downloadForecast(forecast['enaId'], directoryOfDownload,
+                         forecast['nome'] + ' - ' + forecast['membro'] + '- ENA.zip')
+        # downloadForecast(forecast['vnaId'], dir_download, forecast['nome'] + ' - ' + forecast['membro'] + '- VNA.csv')
+        # downloadForecast(forecast['strId'], dir_download, forecast['nome'] + ' - ' + forecast['membro'] + '- STR.zip')
