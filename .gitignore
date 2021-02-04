@@ -1,4 +1,6 @@
-Arquivos/*/*
+# Input files
+*.zip
+*.xls*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
