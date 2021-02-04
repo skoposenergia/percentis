@@ -1,6 +1,6 @@
 # Input files
 *.zip
-*.xls*
+*.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
